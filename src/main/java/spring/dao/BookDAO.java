@@ -1,8 +1,7 @@
 package spring.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import spring.models.Book;
 import spring.models.Person;
@@ -15,24 +14,11 @@ import java.util.Optional;
 @Component
 public class BookDAO {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/library";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "postgres";
+    private final JdbcTemplate jdbcTemplate;
 
-    private static Connection connection;
-
-    static {
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+    @Autowired
+    public BookDAO(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
 
